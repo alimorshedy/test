@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <button id="checkout-button">Pay Now</button>
+
+    <script>
+        var stripe = Stripe("your_stripe_public_key");
+
+        document.getElementById("checkout-button").addEventListener("click", function () {
+            fetch("https://your-server.com/create-checkout-session", {
+                method: "POST",
+            })
+            .then(response => response.json())
+            .then(session => {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
